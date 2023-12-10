@@ -1,0 +1,10 @@
+To: recipient@example.com
+From: your_email@example.com
+Subject: Your Subject Here
+
+Hello,
+
+This is the body of your email. You can write your message here.
+
+Regards,
+Your Name

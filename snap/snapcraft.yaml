@@ -1,0 +1,48 @@
+name: ssmtp-snap
+base: core22
+version: "2.64"
+summary: Extremely simple MTA to get mail off the system to a mail hub
+description: |
+  sSMTP is a simple and lightweight MTA to deliver mail from a computer to a mail hub (SMTP server).
+
+#grade: devel #This is for development only.
+#confinement: devmode #This is for development only. Unconfined snap environment. For production, use strict.
+grade: stable #This is for releasing in the stable channel.
+confinement: strict #This is for production only.
+
+architectures:
+  - build-on: [amd64]
+    build-for: [amd64]
+  - build-on: [amd64, arm64]
+    build-for: [arm64]
+
+apps:
+  ssmtp:
+    command: bin/ssmtp.sh
+    plugs:
+      - network
+
+  get-template:
+    command: bin/get-template.sh
+
+parts:
+  wrappers:
+    plugin: dump
+    source: app/wrapper
+    organize:
+      ssmtp.sh: bin/ssmtp.sh
+      get-template.sh: bin/get-template.sh
+
+  templates:
+    plugin: dump
+    source: app/config
+    organize:
+      ssmtp-template.conf: config/ssmtp.conf
+
+  ssmtp:
+    plugin: nil
+    stage-packages:
+      - ssmtp
+    stage:
+      - -etc
+      - -usr/share
